@@ -38,11 +38,11 @@ Polymer 1.X and 2.X accordion container
 
       _collapsibleToggled: function(evt, self) {
         var containers = self.getAllCollapsibles();
-        
+
         if (containers && containers.length) {
           for (var i = 0; i < containers.length; i++) {
             var item = containers[i];
-             
+
             if (item.open && item != evt.target) {
               item.close();
             }
@@ -51,26 +51,28 @@ Polymer 1.X and 2.X accordion container
       },
 
       attached: function() {
-        var self = this;
-        var containers = this.getAllCollapsibles();
+        this.addEventListener('dom-change', function() {
+          var self = this;
+          var containers = this.getAllCollapsibles();
 
-        if (!containers || containers.length === 0) {
-          throw 'No collapsible-containers could be found inside ' + this + ' !';
-        }
-
-        if (!this.getOpenCollapsible()) {
-          containers[0].set('open', true);
-        }
-
-        if (containers && containers.length) {
-          for (var i = 0; i < containers.length; i++) {
-            var item = containers[i];
-
-            item.addEventListener('collapsibleopened', function (evt) {
-              self._collapsibleToggled(evt, self);
-            }, false);
+          if (!containers || containers.length === 0) {
+            throw 'No collapsible-containers could be found inside ' + this + ' !';
           }
-        }
+
+          if (!this.getOpenCollapsible()) {
+            containers[0].set('open', true);
+          }
+
+          if (containers && containers.length) {
+            for (var i = 0; i < containers.length; i++) {
+              var item = containers[i];
+
+              item.addEventListener('collapsibleopened', function (evt) {
+                self._collapsibleToggled(evt, self);
+              }, false);
+            }
+          }
+        });
       },
 
       /**
